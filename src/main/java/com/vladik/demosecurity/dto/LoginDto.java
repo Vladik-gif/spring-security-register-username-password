@@ -2,15 +2,15 @@ package com.vladik.demosecurity.dto;
 
 public class LoginDto {
 
-    private String usernameOrEmail;
+    private String email;
     private String password;
 
-    public String getUsernameOrEmail() {
-        return usernameOrEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsernameOrEmail(String usernameOrEmail) {
-        this.usernameOrEmail = usernameOrEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
