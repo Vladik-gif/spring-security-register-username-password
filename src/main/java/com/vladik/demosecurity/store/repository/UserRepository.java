@@ -1,6 +1,6 @@
-package com.vladik.demosecurity.repository;
+package com.vladik.demosecurity.store.repository;
 
-import com.vladik.demosecurity.entity.UserEntity;
+import com.vladik.demosecurity.store.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +11,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByEmail(String email);
     Optional<UserEntity> findByUsernameOrEmail(String username, String email);
+
     Optional<UserEntity> findByUsername(String username);
     Boolean existsByUsername(String username);
-    Boolean existsByEmail(String email);
 
+    Boolean existsByPassword(String password);
+
+    Boolean existsByEmail(String email);
 }

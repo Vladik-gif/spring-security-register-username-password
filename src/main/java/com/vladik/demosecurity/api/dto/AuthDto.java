@@ -1,4 +1,4 @@
-package com.vladik.demosecurity.dto;
+package com.vladik.demosecurity.api.dto;
 
 public class AuthDto {
 
