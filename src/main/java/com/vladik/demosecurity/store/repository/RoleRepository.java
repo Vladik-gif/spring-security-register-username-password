@@ -1,6 +1,6 @@
-package com.vladik.demosecurity.repository;
+package com.vladik.demosecurity.store.repository;
 
-import com.vladik.demosecurity.entity.RoleEntity;
+import com.vladik.demosecurity.store.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

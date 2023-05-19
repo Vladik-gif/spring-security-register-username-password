@@ -1,4 +1,4 @@
-package com.vladik.demosecurity.entity;
+package com.vladik.demosecurity.store.entity;
 
 import jakarta.persistence.*;
 

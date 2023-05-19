@@ -1,7 +1,7 @@
-package com.vladik.demosecurity.servise;
+package com.vladik.demosecurity.api.security;
 
-import com.vladik.demosecurity.entity.UserEntity;
-import com.vladik.demosecurity.repository.UserRepository;
+import com.vladik.demosecurity.store.entity.UserEntity;
+import com.vladik.demosecurity.store.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,11 +14,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public MyUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

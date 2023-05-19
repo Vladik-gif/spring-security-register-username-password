@@ -1,11 +1,11 @@
-package com.vladik.demosecurity.controllers;
+package com.vladik.demosecurity.api.service;
 
-import com.vladik.demosecurity.dto.LoginDto;
-import com.vladik.demosecurity.dto.AuthDto;
-import com.vladik.demosecurity.entity.RoleEntity;
-import com.vladik.demosecurity.entity.UserEntity;
-import com.vladik.demosecurity.repository.RoleRepository;
-import com.vladik.demosecurity.repository.UserRepository;
+import com.vladik.demosecurity.api.dto.AuthDto;
+import com.vladik.demosecurity.api.dto.LoginDto;
+import com.vladik.demosecurity.store.entity.RoleEntity;
+import com.vladik.demosecurity.store.entity.UserEntity;
+import com.vladik.demosecurity.store.repository.RoleRepository;
+import com.vladik.demosecurity.store.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,47 +13,43 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
+
 import java.util.Collections;
 
-@RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+@Service
+public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final String authenticate = "/authenticate";
-    private static final String register = "/register";
 
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserRepository userRepository,
-                          RoleRepository roleRepository,
-                          PasswordEncoder passwordEncoder) {
+    public AuthService(AuthenticationManager authenticationManager,
+                       UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping(authenticate)
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto){
+    public ResponseEntity<String> authenticateUser(LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
-                        loginDto.getPassword())
+                        loginDto.getPassword()
+                )
         );
+
+
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new ResponseEntity<>("Ви в системі", HttpStatus.OK);
     }
 
-    @PostMapping(register)
-    public ResponseEntity<?> registerUser(@RequestBody AuthDto authDto){
+    public ResponseEntity<?> registerUser(AuthDto authDto){
 
         // add check for username exists in a DB
         if(userRepository.existsByUsername(authDto.getUsername())){
@@ -63,6 +59,11 @@ public class AuthController {
         // add check for email exists in DB
         if(userRepository.existsByEmail(authDto.getEmail())){
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+        }
+
+        // add check for password exists in DB
+        if (userRepository.existsByPassword(authDto.getPassword())){
+            return new ResponseEntity<>("Password is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         // create user object
@@ -80,4 +81,5 @@ public class AuthController {
         return new ResponseEntity<>("Регистація пройшла успішно!", HttpStatus.OK);
 
     }
+
 }
